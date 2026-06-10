@@ -1,0 +1,91 @@
+'use client';
+import FadeIn from './FadeIn';
+
+
+const SERVICES = [
+  {
+    number: '01',
+    title: 'UI/UX Design',
+    description:
+      'Designing clean, intuitive interfaces that prioritise user flow, hierarchy, and visual clarity — turning ideas into experiences people actually enjoy using.',
+  },
+  {
+    number: '02',
+    title: 'Front-end Development',
+    description:
+      'Building responsive, performant web apps with React, TypeScript, and Tailwind — pixel-perfect on every screen, deployed seamlessly on Vercel.',
+  },
+  {
+    number: '03',
+    title: 'GenAI Integration',
+    description:
+      'Wiring large language models into real products via Gemini, Claude, and OpenAI APIs — from resume reviewers to AI tutors and beyond.',
+  },
+  {
+    number: '04',
+    title: 'Prompt Engineering & LLM Automation',
+    description:
+      'Crafting reliable prompts and automation flows that turn LLMs into production-grade tools for content, analysis, and decision support.',
+  },
+  {
+    number: '05',
+    title: 'Data Analysis & Visualization',
+    description:
+      'Exploring datasets with Python (Pandas, NumPy, Seaborn) and Power BI — turning raw numbers into clear insights and dashboards stakeholders can act on.',
+  },
+];
+
+const ServicesSection = () => {
+  return (
+    <section
+      id="services"
+      className="relative w-full bg-transparent px-5 sm:px-8 md:px-10 py-20 sm:py-24 md:py-32"
+    >
+      <FadeIn y={80}>
+        <h2
+          className="text-center font-black uppercase text-[#D7E2EA] mb-16 sm:mb-20 md:mb-28 leading-none"
+          style={{ fontSize: 'clamp(2.5rem, 10vw, 130px)' }}
+        >
+          Services
+        </h2>
+      </FadeIn>
+
+      <div className="mx-auto max-w-5xl space-y-8 sm:space-y-12">
+        {SERVICES.map((service, i) => (
+          <FadeIn key={service.number} delay={i * 0.15} y={100}>
+            <div
+              className="flex flex-row items-start gap-6 sm:gap-10 md:gap-14 p-8 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[40px] bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] transition-all duration-500 hover:bg-white/10 hover:-translate-y-2 hover:shadow-[0_8px_32px_0_rgba(255,255,255,0.05)]"
+            >
+              <div
+                className="shrink-0 font-black text-[#D7E2EA]/80 leading-none"
+                style={{ fontSize: 'clamp(3rem, 10vw, 140px)' }}
+              >
+                {service.number}
+              </div>
+
+              <div className="group flex flex-col gap-3 sm:gap-4 md:gap-5 pt-2 sm:pt-3 md:pt-4">
+                <h3
+                  className="font-medium uppercase text-[#D7E2EA] leading-tight relative inline-block w-fit"
+                  style={{ fontSize: 'clamp(1rem, 2.2vw, 2.1rem)' }}
+                >
+                  {service.title}
+                  <span className="absolute left-0 -bottom-1 h-px w-0 bg-[#D7E2EA]/60 transition-all duration-500 group-hover:w-full" />
+                </h3>
+                <p
+                  className="font-light leading-relaxed text-[#D7E2EA]/70 max-w-2xl"
+                  style={{
+                    fontSize: 'clamp(0.85rem, 1.6vw, 1.25rem)'
+                  }}
+                >
+                  {service.description}
+                </p>
+              </div>
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export default ServicesSection;
