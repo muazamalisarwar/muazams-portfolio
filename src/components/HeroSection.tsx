@@ -20,6 +20,17 @@ const HeroSection = () => {
     return () => clearTimeout(t);
   }, []);
 
+  // Force video playback (fixes iOS/Safari autoplay blocks in React)
+  useEffect(() => {
+    const v = videoRef.current;
+    if (v) {
+      v.defaultMuted = true;
+      v.muted = true;
+      v.playsInline = true;
+      v.play().catch((e) => console.log("Autoplay blocked:", e));
+    }
+  }, []);
+
   // Auto-mute video when scrolling past hero
   useEffect(() => {
     const section = sectionRef.current;
