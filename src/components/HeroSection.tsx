@@ -37,12 +37,22 @@ const HeroSection = () => {
     return () => clearTimeout(fallbackTimer);
   }, []);
 
-  // Lock body scroll while loader is visible
+  // Lock body scroll while loader is visible, and force video playback
   useEffect(() => {
     if (!isVideoLoaded) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
+      // Force video playback in case browser autoplay was blocked
+      if (videoRef.current) {
+        videoRef.current.play().catch(() => {
+          // Autoplay was prevented by browser, mute it and try again
+          if (videoRef.current) {
+            videoRef.current.muted = true;
+            videoRef.current.play().catch(e => console.error('Video play failed:', e));
+          }
+        });
+      }
     }
     return () => { document.body.style.overflow = 'auto'; };
   }, [isVideoLoaded]);
@@ -84,7 +94,7 @@ const HeroSection = () => {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8, ease: 'easeInOut' }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md"
           >
             <motion.div
               initial={{ opacity: 0, y: 15 }}

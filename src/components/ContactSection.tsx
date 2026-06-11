@@ -65,7 +65,8 @@ const ContactSection = () => {
       try {
         data = JSON.parse(text);
       } catch (e) {
-        throw new Error('Server returned an unexpected response. Please try restarting your local dev server.');
+        console.error('API Error Response:', text);
+        throw new Error('Server error: ' + (text.slice(0, 50) || 'Unknown error'));
       }
 
       if (!response.ok) {
