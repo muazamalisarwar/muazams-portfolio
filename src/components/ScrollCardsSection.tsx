@@ -249,7 +249,7 @@ function AnimatedCard({ card, index, total, containerProgress }: AnimatedCardPro
 
   // Combine both opacity effects
   const combinedOpacity = useTransform(
-    [cardOpacityIn, opacity] as any,
+    [cardOpacityIn, opacity] as Parameters<typeof useTransform>[0],
     ([inVal, outVal]: number[]) => Math.min(inVal, outVal)
   );
 

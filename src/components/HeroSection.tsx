@@ -22,44 +22,30 @@ const HeroSection = () => {
     return () => clearTimeout(t);
   }, []);
 
-  // Video load detection
+  // Video load detection & fallback timeout
   useEffect(() => {
     // Check if video is already loaded from cache
     if (videoRef.current && videoRef.current.readyState >= 3) {
       setIsVideoLoaded(true);
     }
+    
+    // Fallback: If video takes too long (or fails), hide loader after 3.5s anyway
+    const fallbackTimer = setTimeout(() => {
+      setIsVideoLoaded(true);
+    }, 3500);
+
+    return () => clearTimeout(fallbackTimer);
   }, []);
 
-  // Lock body scroll while loader is visible, and force video playback
+  // Lock body scroll while loader is visible
   useEffect(() => {
     if (!isVideoLoaded) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
-      // Force video playback in case browser autoplay was blocked
-      if (videoRef.current) {
-        videoRef.current.play().catch(() => {
-          // Autoplay was prevented by browser, mute it and try again
-          if (videoRef.current) {
-            videoRef.current.muted = true;
-            videoRef.current.play().catch(e => console.error('Video play failed:', e));
-          }
-        });
-      }
     }
     return () => { document.body.style.overflow = 'auto'; };
   }, [isVideoLoaded]);
-
-  const handleVideoLoaded = () => {
-    if (videoRef.current && videoRef.current.readyState >= 3) {
-      setIsVideoLoaded(true);
-    }
-  };
-
-  const handleVideoError = () => {
-    console.error("Video failed to load.");
-    setIsVideoLoaded(true); // Hide loader anyway so site is usable
-  };
 
   // Auto-mute video when scrolling past hero
   useEffect(() => {
@@ -98,7 +84,7 @@ const HeroSection = () => {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8, ease: 'easeInOut' }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black"
           >
             <motion.div
               initial={{ opacity: 0, y: 15 }}
@@ -111,7 +97,7 @@ const HeroSection = () => {
                 style={{ fontSize: 'clamp(0.9rem, 2.5vw, 1.2rem)' }}
               >
                 Welcome To <br className="sm:hidden" />
-                <span className="font-bold text-[#D7E2EA] sm:ml-2">Muazam&apos;s Portfolio</span>
+                <span className="font-bold text-[#D7E2EA] sm:ml-2">Muazam's Portfolio</span>
               </h1>
               
               {/* Subtle loading spinner/indicator */}
@@ -146,9 +132,7 @@ const HeroSection = () => {
           loop
           playsInline
           preload="auto"
-          onCanPlay={handleVideoLoaded}
-          onLoadedData={handleVideoLoaded}
-          onError={handleVideoError}
+          onCanPlay={() => setIsVideoLoaded(true)}
           className="absolute inset-0 h-full w-full object-cover"
         >
           <source src="/Video.mp4" type="video/mp4" />
