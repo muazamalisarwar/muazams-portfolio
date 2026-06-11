@@ -60,7 +60,13 @@ const ContactSection = () => {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
+      const text = await response.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        throw new Error('Server returned an unexpected response. Please try restarting your local dev server.');
+      }
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to send message');
