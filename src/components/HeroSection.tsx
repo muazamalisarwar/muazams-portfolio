@@ -97,7 +97,7 @@ const HeroSection = () => {
                 style={{ fontSize: 'clamp(0.9rem, 2.5vw, 1.2rem)' }}
               >
                 Welcome To <br className="sm:hidden" />
-                <span className="font-bold text-[#D7E2EA] sm:ml-2">Muazam's Portfolio</span>
+                <span className="font-bold text-[#D7E2EA] sm:ml-2">Muazam&apos;s Portfolio</span>
               </h1>
               
               {/* Subtle loading spinner/indicator */}
