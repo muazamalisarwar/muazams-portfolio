@@ -22,19 +22,12 @@ const HeroSection = () => {
     return () => clearTimeout(t);
   }, []);
 
-  // Video load detection & fallback timeout
+  // Video load detection
   useEffect(() => {
     // Check if video is already loaded from cache
     if (videoRef.current && videoRef.current.readyState >= 3) {
       setIsVideoLoaded(true);
     }
-    
-    // Fallback: If video takes too long (or fails), hide loader after 3.5s anyway
-    const fallbackTimer = setTimeout(() => {
-      setIsVideoLoaded(true);
-    }, 3500);
-
-    return () => clearTimeout(fallbackTimer);
   }, []);
 
   // Lock body scroll while loader is visible, and force video playback
@@ -56,6 +49,17 @@ const HeroSection = () => {
     }
     return () => { document.body.style.overflow = 'auto'; };
   }, [isVideoLoaded]);
+
+  const handleVideoLoaded = () => {
+    if (videoRef.current && videoRef.current.readyState >= 3) {
+      setIsVideoLoaded(true);
+    }
+  };
+
+  const handleVideoError = () => {
+    console.error("Video failed to load.");
+    setIsVideoLoaded(true); // Hide loader anyway so site is usable
+  };
 
   // Auto-mute video when scrolling past hero
   useEffect(() => {
@@ -142,7 +146,9 @@ const HeroSection = () => {
           loop
           playsInline
           preload="auto"
-          onCanPlay={() => setIsVideoLoaded(true)}
+          onCanPlay={handleVideoLoaded}
+          onLoadedData={handleVideoLoaded}
+          onError={handleVideoError}
           className="absolute inset-0 h-full w-full object-cover"
         >
           <source src="/Video.mp4" type="video/mp4" />
