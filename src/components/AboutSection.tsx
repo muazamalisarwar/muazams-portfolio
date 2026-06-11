@@ -4,7 +4,7 @@ import ContactButton from './ContactButton';
 import AnimatedText from './AnimatedText';
 
 const ABOUT_TEXT =
-  "Results-driven Computer Science student (CGPA 3.74/4.0) at University of Education Lahore with hands-on experience in full stack development, Android applications, and AI/ML-based computer vision systems. Proficient in Python, Java, C++, and JavaScript with practical knowledge of RESTful APIs, OOP design patterns, Firebase, and SQL/NoSQL databases. Seeking a Software Development or AI/ML internship to contribute to real-world engineering teams.";
+  "Results-driven Computer Science student at University of Education Lahore with hands-on experience in full stack development, Android applications, and AI/ML-based computer vision systems. Proficient in Python, Java, C++, and JavaScript with practical knowledge of RESTful APIs, OOP design patterns, Firebase, and SQL/NoSQL databases. Seeking a Software Development or AI/ML internship to contribute to real-world engineering teams.";
 
 const AboutSection = () => {
   return (
