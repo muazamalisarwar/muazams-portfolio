@@ -75,7 +75,7 @@ const ContactSection = () => {
                   <input 
                     type="text" 
                     className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-[#D7E2EA] outline-none focus:border-white/30 focus:bg-white/10 transition-all duration-300 placeholder:text-[#D7E2EA]/30 font-light" 
-                    placeholder="John Doe" 
+                    placeholder="Muazam Ali" 
                   />
                 </div>
                 <div className="flex flex-col gap-3 w-full">
@@ -85,7 +85,7 @@ const ContactSection = () => {
                   <input 
                     type="email" 
                     className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-[#D7E2EA] outline-none focus:border-white/30 focus:bg-white/10 transition-all duration-300 placeholder:text-[#D7E2EA]/30 font-light" 
-                    placeholder="john@example.com" 
+                    placeholder="mail@example.com" 
                   />
                 </div>
               </div>
@@ -180,7 +180,7 @@ const ContactSection = () => {
             className="font-light uppercase tracking-widest text-[#D7E2EA]/50"
             style={{ fontSize: 'clamp(0.7rem, 1.1vw, 0.9rem)' }}
           >
-            Designed & built in Lahore
+            Designed and built by Muazam Ali
           </span>
         </div>
       </FadeIn>
