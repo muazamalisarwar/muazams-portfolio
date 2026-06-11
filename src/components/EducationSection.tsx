@@ -1,4 +1,6 @@
 'use client';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import FadeIn from './FadeIn';
 
 const EDUCATION = [
@@ -28,7 +30,80 @@ const EDUCATION = [
   }
 ];
 
+interface EducationCardProps {
+  edu: typeof EDUCATION[0];
+  index: number;
+  total: number;
+}
+
+const EducationCard = ({ edu, index, total }: EducationCardProps) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ['start end', 'start start'],
+  });
+
+  const targetScale = 1 - (total - 1 - index) * 0.03;
+  const scale = useTransform(scrollYProgress, [0, 1], [1, targetScale]);
+
+  return (
+    <div
+      ref={cardRef}
+      className="sticky top-24 md:top-32 w-full h-[50vh] sm:h-[60vh]"
+      style={{ top: `${96 + index * 28}px` }}
+    >
+      <motion.article
+        style={{ scale }}
+        className="origin-top mx-auto max-w-5xl w-full flex flex-col md:flex-row items-start gap-6 sm:gap-10 md:gap-14 p-8 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[40px] bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]"
+      >
+        <div className="md:w-1/3 shrink-0 flex flex-col gap-2">
+          <h3
+            className="font-medium uppercase text-[#D7E2EA] leading-tight"
+            style={{ fontSize: 'clamp(1rem, 1.8vw, 1.6rem)' }}
+          >
+            {edu.school}
+          </h3>
+          <p className="text-sm uppercase tracking-widest text-[#D7E2EA]/60 font-light">
+            {edu.duration}
+          </p>
+          <p className="text-xs uppercase tracking-widest text-[#D7E2EA]/40 font-light mt-1">
+            {edu.location}
+          </p>
+        </div>
+
+        <div className="md:w-2/3 group flex flex-col gap-3 sm:gap-4 pt-2 md:pt-0">
+          <h4
+            className="font-medium uppercase text-[#D7E2EA] leading-tight relative inline-block w-fit"
+            style={{ fontSize: 'clamp(1.1rem, 2vw, 1.8rem)' }}
+          >
+            {edu.degree}
+            <span className="absolute left-0 -bottom-1 h-px w-0 bg-[#D7E2EA]/60 transition-all duration-500 group-hover:w-full" />
+          </h4>
+          
+          {edu.cgpa && (
+            <p className="font-medium text-[#D7E2EA]/90" style={{ fontSize: 'clamp(0.9rem, 1.2vw, 1.1rem)' }}>
+              CGPA: <span className="font-bold text-[#D7E2EA]">{edu.cgpa}</span>
+            </p>
+          )}
+
+          {edu.description && (
+            <p
+              className="font-light leading-relaxed text-[#D7E2EA]/70 mt-2"
+              style={{ fontSize: 'clamp(0.85rem, 1.2vw, 1.1rem)' }}
+            >
+              {edu.description}
+            </p>
+          )}
+        </div>
+      </motion.article>
+    </div>
+  );
+};
+
 const EducationSection = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   return (
     <section
       id="education"
@@ -43,53 +118,14 @@ const EducationSection = () => {
         </h2>
       </FadeIn>
 
-      <div className="mx-auto max-w-5xl space-y-8 sm:space-y-12">
+      <div ref={containerRef} className="mx-auto max-w-5xl relative pb-20">
         {EDUCATION.map((edu, i) => (
-          <FadeIn key={edu.degree} delay={i * 0.15} y={100}>
-            <div
-              className="flex flex-col md:flex-row items-start gap-6 sm:gap-10 md:gap-14 p-8 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[40px] bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] transition-all duration-500 hover:bg-white/10 hover:-translate-y-2 hover:shadow-[0_8px_32px_0_rgba(255,255,255,0.05)]"
-            >
-              <div className="md:w-1/3 shrink-0 flex flex-col gap-2">
-                <h3
-                  className="font-medium uppercase text-[#D7E2EA] leading-tight"
-                  style={{ fontSize: 'clamp(1rem, 1.8vw, 1.6rem)' }}
-                >
-                  {edu.school}
-                </h3>
-                <p className="text-sm uppercase tracking-widest text-[#D7E2EA]/60 font-light">
-                  {edu.duration}
-                </p>
-                <p className="text-xs uppercase tracking-widest text-[#D7E2EA]/40 font-light mt-1">
-                  {edu.location}
-                </p>
-              </div>
-
-              <div className="md:w-2/3 group flex flex-col gap-3 sm:gap-4 pt-2 md:pt-0">
-                <h4
-                  className="font-medium uppercase text-[#D7E2EA] leading-tight relative inline-block w-fit"
-                  style={{ fontSize: 'clamp(1.1rem, 2vw, 1.8rem)' }}
-                >
-                  {edu.degree}
-                  <span className="absolute left-0 -bottom-1 h-px w-0 bg-[#D7E2EA]/60 transition-all duration-500 group-hover:w-full" />
-                </h4>
-                
-                {edu.cgpa && (
-                  <p className="font-medium text-[#D7E2EA]/90" style={{ fontSize: 'clamp(0.9rem, 1.2vw, 1.1rem)' }}>
-                    CGPA: <span className="font-bold text-[#D7E2EA]">{edu.cgpa}</span>
-                  </p>
-                )}
-
-                {edu.description && (
-                  <p
-                    className="font-light leading-relaxed text-[#D7E2EA]/70 mt-2"
-                    style={{ fontSize: 'clamp(0.85rem, 1.2vw, 1.1rem)' }}
-                  >
-                    {edu.description}
-                  </p>
-                )}
-              </div>
-            </div>
-          </FadeIn>
+          <EducationCard
+            key={edu.degree}
+            edu={edu}
+            index={i}
+            total={EDUCATION.length}
+          />
         ))}
       </div>
     </section>
