@@ -30,7 +30,7 @@ export default function Preloader({ isLoading }: PreloaderProps) {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease: 'easeInOut' }}
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black"
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/95"
         >
           {/* Animated Loader Circle */}
           <motion.div

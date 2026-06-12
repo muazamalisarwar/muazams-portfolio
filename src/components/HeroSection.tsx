@@ -15,15 +15,24 @@ const HeroSection = () => {
   const [showSoundHint, setShowSoundHint] = useState(true);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
+  // Helper to ensure video plays
+  const attemptPlay = () => {
+    if (videoRef.current) {
+      videoRef.current.play().catch((e) => console.log("Autoplay blocked:", e));
+    }
+  };
+
   // Video loading state and fallback timeout
   useEffect(() => {
     if (videoRef.current && videoRef.current.readyState >= 3) {
       setIsVideoLoaded(true);
+      attemptPlay();
     }
     
     // Fallback timeout of 4 seconds in case the event fails
     const fallbackTimer = setTimeout(() => {
       setIsVideoLoaded(true);
+      attemptPlay();
     }, 4000);
 
     return () => clearTimeout(fallbackTimer);
@@ -42,7 +51,7 @@ const HeroSection = () => {
       v.defaultMuted = true;
       v.muted = true;
       v.playsInline = true;
-      v.play().catch((e) => console.log("Autoplay blocked:", e));
+      attemptPlay();
     }
   }, []);
 
@@ -90,10 +99,18 @@ const HeroSection = () => {
           playsInline
           preload="auto"
           className="absolute inset-0 h-full w-full object-cover"
-          onCanPlayThrough={() => setIsVideoLoaded(true)}
+          onCanPlay={() => {
+            setIsVideoLoaded(true);
+            attemptPlay();
+          }}
+          onCanPlayThrough={() => {
+            setIsVideoLoaded(true);
+            attemptPlay();
+          }}
           onLoadedData={() => {
             if (videoRef.current && videoRef.current.readyState >= 3) {
               setIsVideoLoaded(true);
+              attemptPlay();
             }
           }}
         >
