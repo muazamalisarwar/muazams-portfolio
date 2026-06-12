@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import FadeIn from './FadeIn';
-
+import Preloader from './Preloader';
 const NAV_LINKS = [
   { label: 'About', href: '#about' },
   { label: 'Projects', href: '#projects' },
@@ -13,6 +13,21 @@ const HeroSection = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
   const [showSoundHint, setShowSoundHint] = useState(true);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+
+  // Video loading state and fallback timeout
+  useEffect(() => {
+    if (videoRef.current && videoRef.current.readyState >= 3) {
+      setIsVideoLoaded(true);
+    }
+    
+    // Fallback timeout of 4 seconds in case the event fails
+    const fallbackTimer = setTimeout(() => {
+      setIsVideoLoaded(true);
+    }, 4000);
+
+    return () => clearTimeout(fallbackTimer);
+  }, []);
 
   // Auto-hide "Tap for sound" hint after 5 seconds
   useEffect(() => {
@@ -63,17 +78,25 @@ const HeroSection = () => {
   };
 
   return (
-    <section ref={sectionRef} className="relative h-screen w-full overflow-hidden bg-black">
-      {/* Video background */}
-      <video
-        ref={videoRef}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        className="absolute inset-0 h-full w-full object-cover"
-      >
+    <>
+      <Preloader isLoading={!isVideoLoaded} />
+      <section ref={sectionRef} className="relative h-screen w-full overflow-hidden bg-black">
+        {/* Video background */}
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="absolute inset-0 h-full w-full object-cover"
+          onCanPlayThrough={() => setIsVideoLoaded(true)}
+          onLoadedData={() => {
+            if (videoRef.current && videoRef.current.readyState >= 3) {
+              setIsVideoLoaded(true);
+            }
+          }}
+        >
         <source src="/Video.mp4" type="video/mp4" />
       </video>
 
@@ -205,6 +228,7 @@ const HeroSection = () => {
         }
       `}</style>
     </section>
+    </>
   );
 };
 
