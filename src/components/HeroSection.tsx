@@ -37,11 +37,11 @@ const HeroSection = () => {
       attemptPlay();
     }
     
-    // Fallback timeout increased to 10 seconds so preloader doesn't drop before slow video loads
+    // Fallback timeout reduced to 2.5 seconds to prevent the website from being blocked
     const fallbackTimer = setTimeout(() => {
       setIsVideoLoaded(true);
       attemptPlay();
-    }, 10000);
+    }, 2500);
 
     return () => clearTimeout(fallbackTimer);
   }, []);
@@ -154,17 +154,6 @@ const HeroSection = () => {
             playsInline
             preload="auto"
             className="absolute inset-0 h-full w-full object-cover"
-            onCanPlay={() => {
-              attemptPlay();
-            }}
-            onCanPlayThrough={() => {
-              attemptPlay();
-            }}
-            onLoadedData={() => {
-              if (videoRef.current && videoRef.current.readyState >= 3) {
-                attemptPlay();
-              }
-            }}
             onPlaying={() => {
               setIsVideoLoaded(true); // Only dismiss preloader when video actually starts playing frames
             }}
@@ -176,8 +165,8 @@ const HeroSection = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/35 to-black/40" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70" />
 
-          {/* Network Particles Overlay */}
-          <HeroParticles />
+          {/* Network Particles Overlay (Delayed to save CPU during video load) */}
+          {isVideoLoaded && <HeroParticles />}
         </div>
 
       {/* Content layer */}

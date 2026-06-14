@@ -101,7 +101,8 @@ const HeroParticles = () => {
 
     const initParticles = () => {
       particles = [];
-      const numParticles = Math.min(Math.floor(window.innerWidth / 12), 120); // Responsive amount
+      // Optimization: drastically reduced max particles to prevent main thread blocking while video plays
+      const numParticles = Math.min(Math.floor(window.innerWidth / 20), 70); 
       for (let i = 0; i < numParticles; i++) {
         particles.push(new Particle(window.innerWidth, window.innerHeight));
       }
@@ -128,9 +129,11 @@ const HeroParticles = () => {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+          // Optimization: Check squared distance first before doing expensive Math.sqrt
+          const distSq = dx * dx + dy * dy;
 
-          if (distance < 130) { // Connect if close enough
+          if (distSq < 16900) { // 130 * 130
+            const distance = Math.sqrt(distSq);
             if (!ctx) continue;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
