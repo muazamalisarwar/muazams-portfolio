@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Kanit } from 'next/font/google';
 import './globals.css';
 import ParticleBackground from '@/components/ParticleBackground';
+import SmoothScroll from '@/components/SmoothScroll';
 
 const kanit = Kanit({ subsets: ['latin'], weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'] });
 
@@ -18,10 +19,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${kanit.className} antialiased text-[#D7E2EA]`}>
-        <ParticleBackground />
-        <div className="relative z-10 flex flex-col min-h-screen">
-          {children}
-        </div>
+        <SmoothScroll>
+          <ParticleBackground />
+          <div className="relative z-10 flex flex-col min-h-screen">
+            {children}
+          </div>
+        </SmoothScroll>
       </body>
     </html>
   );

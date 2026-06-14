@@ -1,7 +1,12 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import FadeIn from './FadeIn';
 import Preloader from './Preloader';
+
+gsap.registerPlugin(ScrollTrigger);
 const NAV_LINKS = [
   { label: 'About', href: '#about' },
   { label: 'Projects', href: '#projects' },
@@ -11,6 +16,9 @@ const NAV_LINKS = [
 const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const bgWrapperRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  
   const [muted, setMuted] = useState(true);
   const [showSoundHint, setShowSoundHint] = useState(true);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
@@ -86,40 +94,86 @@ const HeroSection = () => {
     setShowSoundHint(false);
   };
 
+  useGSAP(() => {
+    // Parallax background effect
+    if (bgWrapperRef.current && sectionRef.current) {
+      gsap.to(bgWrapperRef.current, {
+        y: '30%',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+      });
+    }
+
+    // Text Character Animation
+    if (titleRef.current) {
+      const chars = titleRef.current.querySelectorAll('.char');
+      gsap.fromTo(
+        chars,
+        { opacity: 0, y: 100, rotateX: -90 },
+        {
+          opacity: 1,
+          y: 0,
+          rotateX: 0,
+          stagger: 0.05,
+          duration: 1,
+          ease: 'power3.out',
+          delay: 0.8, // Wait for preloader/initial fade
+        }
+      );
+    }
+  }, { scope: sectionRef });
+
+  // Render title characters
+  const renderTitle = (text: string) => {
+    return text.split('').map((char, index) => (
+      <span key={index} className="char inline-block whitespace-pre">
+        {char}
+      </span>
+    ));
+  };
+
   return (
     <>
       <Preloader isLoading={!isVideoLoaded} />
       <section ref={sectionRef} className="relative h-screen w-full overflow-hidden bg-black">
-        {/* Video background */}
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="absolute inset-0 h-full w-full object-cover"
-          onCanPlay={() => {
-            setIsVideoLoaded(true);
-            attemptPlay();
-          }}
-          onCanPlayThrough={() => {
-            setIsVideoLoaded(true);
-            attemptPlay();
-          }}
-          onLoadedData={() => {
-            if (videoRef.current && videoRef.current.readyState >= 3) {
+        {/* Parallax Wrapper */}
+        <div ref={bgWrapperRef} className="absolute inset-0 h-[120%] w-full -top-[10%]">
+          {/* Video background */}
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="absolute inset-0 h-full w-full object-cover"
+            onCanPlay={() => {
               setIsVideoLoaded(true);
               attemptPlay();
-            }
-          }}
-        >
-        <source src="/Video.mp4" type="video/mp4" />
-      </video>
+            }}
+            onCanPlayThrough={() => {
+              setIsVideoLoaded(true);
+              attemptPlay();
+            }}
+            onLoadedData={() => {
+              if (videoRef.current && videoRef.current.readyState >= 3) {
+                setIsVideoLoaded(true);
+                attemptPlay();
+              }
+            }}
+          >
+            <source src="/Video.mp4" type="video/mp4" />
+          </video>
 
-      {/* Cinematic gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/35 to-black/40" />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70" />
+          {/* Cinematic gradient overlays */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/35 to-black/40" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70" />
+        </div>
 
       {/* Content layer */}
       <div className="relative z-10 flex h-full flex-col">
@@ -166,12 +220,14 @@ const HeroSection = () => {
               </p>
             </FadeIn>
 
-            <FadeIn delay={0.5} y={80}>
+            <FadeIn delay={0.5} y={0}>
               <h1
-                className="font-black uppercase leading-[0.88] tracking-tight text-white"
+                ref={titleRef}
+                className="font-black uppercase leading-[0.88] tracking-tight text-white flex flex-wrap"
                 style={{ fontSize: 'clamp(3rem, 12vw, 10.5rem)' }}
               >
-                Muazam<br />Ali
+                <div className="flex w-full">{renderTitle('Muazam')}</div>
+                <div className="flex w-full">{renderTitle('Ali')}</div>
               </h1>
             </FadeIn>
 

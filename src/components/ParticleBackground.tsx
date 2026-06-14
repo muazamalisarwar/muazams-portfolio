@@ -99,14 +99,22 @@ const ParticleBackground = () => {
 
     // Animation Loop
     const clock = new THREE.Clock();
+    let lastScrollY = window.scrollY;
+    let scrollVelocity = 0;
 
     const animate = () => {
       requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
 
-      // Gentle drift upward and slow rotation
-      particlesMesh.rotation.y = elapsedTime * 0.02;
-      particlesMesh.rotation.x = elapsedTime * 0.01;
+      // Calculate scroll velocity
+      const currentScrollY = window.scrollY;
+      const rawVelocity = currentScrollY - lastScrollY;
+      scrollVelocity += (rawVelocity - scrollVelocity) * 0.1; // Smooth it out
+      lastScrollY = currentScrollY;
+
+      // Gentle drift upward and slow rotation, plus scroll velocity effect
+      particlesMesh.rotation.y = elapsedTime * 0.02 + scrollVelocity * 0.002;
+      particlesMesh.rotation.x = elapsedTime * 0.01 + scrollVelocity * 0.001;
       
       // Parallax mouse effect
       targetX = mouseX * 0.5;

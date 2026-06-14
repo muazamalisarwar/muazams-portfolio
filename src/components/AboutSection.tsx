@@ -1,17 +1,48 @@
 'use client';
+import { useRef } from 'react';
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import FadeIn from './FadeIn';
 import ContactButton from './ContactButton';
 import AnimatedText from './AnimatedText';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ABOUT_TEXT =
   "Results-driven Computer Science student at University of Education Lahore with hands-on experience in full stack development, Android applications, and AI/ML-based computer vision systems. Proficient in Python, Java, C++, and JavaScript with practical knowledge of RESTful APIs, OOP design patterns, Firebase, and SQL/NoSQL databases. Seeking a Software Development or AI/ML internship to contribute to real-world engineering teams.";
 
 const AboutSection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const blobRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (blobRef.current && sectionRef.current) {
+      gsap.to(blobRef.current, {
+        rotate: 180,
+        scale: 1.5,
+        borderRadius: '30% 70% 70% 30% / 30% 30% 70% 70%',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      });
+    }
+  }, { scope: sectionRef });
+
   return (
     <section
+      ref={sectionRef}
       id="about"
       className="relative flex min-h-screen w-full items-center justify-center overflow-hidden px-5 sm:px-8 md:px-10 py-20"
     >
+      {/* Morphing Background Blob */}
+      <div 
+        ref={blobRef}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] bg-gradient-to-tr from-[#61bafb]/10 to-[#b072ff]/10 blur-[80px] rounded-[60%_40%_30%_70%/60%_30%_70%_40%] pointer-events-none z-0"
+      />
       {/* Corner decorative 3D images */}
       <FadeIn
         delay={0.1}
