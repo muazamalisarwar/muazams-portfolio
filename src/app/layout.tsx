@@ -18,6 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        {/* Aggressively preload the hero background video before React hydration */}
+        <link rel="preload" as="video" href="/Video.mp4" type="video/mp4" fetchPriority="high" />
+      </head>
       <body className={`${kanit.className} antialiased text-[#D7E2EA]`}>
         <SmoothScroll>
           <ParticleBackground />

@@ -52,13 +52,14 @@ const HeroSection = () => {
     return () => clearTimeout(t);
   }, []);
 
-  // Force video playback (fixes iOS/Safari autoplay blocks in React)
+  // Force video playback and aggressive loading (fixes iOS/Safari autoplay blocks in React)
   useEffect(() => {
     const v = videoRef.current;
     if (v) {
       v.defaultMuted = true;
       v.muted = true;
       v.playsInline = true;
+      v.load(); // Force early browser fetch aggressively
       attemptPlay();
     }
   }, []);
@@ -153,6 +154,8 @@ const HeroSection = () => {
             loop
             playsInline
             preload="auto"
+            fetchPriority="high"
+            poster="/hero.jpg"
             className="absolute inset-0 h-full w-full object-cover"
             onCanPlay={() => {
               attemptPlay();
