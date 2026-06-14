@@ -34,15 +34,14 @@ const HeroSection = () => {
   // Video loading state and fallback timeout
   useEffect(() => {
     if (videoRef.current && videoRef.current.readyState >= 3) {
-      setIsVideoLoaded(true);
       attemptPlay();
     }
     
-    // Fallback timeout of 4 seconds in case the event fails
+    // Fallback timeout increased to 10 seconds so preloader doesn't drop before slow video loads
     const fallbackTimer = setTimeout(() => {
       setIsVideoLoaded(true);
       attemptPlay();
-    }, 4000);
+    }, 10000);
 
     return () => clearTimeout(fallbackTimer);
   }, []);
@@ -109,9 +108,11 @@ const HeroSection = () => {
         },
       });
     }
+  }, { scope: sectionRef });
 
+  useGSAP(() => {
     // Text Character Animation
-    if (titleRef.current) {
+    if (titleRef.current && isVideoLoaded) {
       const chars = titleRef.current.querySelectorAll('.char');
       gsap.fromTo(
         chars,
@@ -123,11 +124,11 @@ const HeroSection = () => {
           stagger: 0.05,
           duration: 1,
           ease: 'power3.out',
-          delay: 0.8, // Wait for preloader/initial fade
+          delay: 0.2, // Wait for preloader to start fading before animating text
         }
       );
     }
-  }, { scope: sectionRef });
+  }, { scope: sectionRef, dependencies: [isVideoLoaded] });
 
   // Render title characters
   const renderTitle = (text: string) => {
@@ -154,18 +155,18 @@ const HeroSection = () => {
             preload="auto"
             className="absolute inset-0 h-full w-full object-cover"
             onCanPlay={() => {
-              setIsVideoLoaded(true);
               attemptPlay();
             }}
             onCanPlayThrough={() => {
-              setIsVideoLoaded(true);
               attemptPlay();
             }}
             onLoadedData={() => {
               if (videoRef.current && videoRef.current.readyState >= 3) {
-                setIsVideoLoaded(true);
                 attemptPlay();
               }
+            }}
+            onPlaying={() => {
+              setIsVideoLoaded(true); // Only dismiss preloader when video actually starts playing frames
             }}
           >
             <source src="/Video.mp4" type="video/mp4" />
