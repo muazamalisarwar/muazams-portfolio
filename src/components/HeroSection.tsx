@@ -5,6 +5,7 @@ import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import FadeIn from './FadeIn';
 import Preloader from './Preloader';
+import HeroParticles from './HeroParticles';
 
 gsap.registerPlugin(ScrollTrigger);
 const NAV_LINKS = [
@@ -173,6 +174,9 @@ const HeroSection = () => {
           {/* Cinematic gradient overlays */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/35 to-black/40" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70" />
+
+          {/* Network Particles Overlay */}
+          <HeroParticles />
         </div>
 
       {/* Content layer */}

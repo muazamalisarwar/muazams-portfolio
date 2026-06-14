@@ -6,33 +6,39 @@ import FadeIn from './FadeIn';
 const SERVICES = [
   {
     number: '01',
-    title: 'UI/UX Design',
+    title: 'Front End Development',
     description:
-      'Designing clean, intuitive interfaces that prioritise user flow, hierarchy, and visual clarity — turning ideas into experiences people actually enjoy using.',
+      'Building responsive, performant web apps with modern frameworks like React and Next.js, focusing on pixel-perfect, accessible, and engaging user interfaces.',
   },
   {
     number: '02',
-    title: 'Front-end Development',
+    title: 'Database Development',
     description:
-      'Building responsive, performant web apps with React, TypeScript, and Tailwind — pixel-perfect on every screen, deployed seamlessly on Vercel.',
+      'Designing, optimizing, and managing scalable database architectures using SQL and NoSQL solutions for secure and efficient data storage and retrieval.',
   },
   {
     number: '03',
-    title: 'GenAI Integration',
+    title: 'AI/ML Development',
     description:
-      'Wiring large language models into real products via Gemini, Claude, and OpenAI APIs — from resume reviewers to AI tutors and beyond.',
+      'Integrating intelligent systems and machine learning models to build data-driven applications, utilizing modern AI tools and large language model APIs.',
   },
   {
     number: '04',
-    title: 'Prompt Engineering & LLM Automation',
+    title: 'Full Stack Development',
     description:
-      'Crafting reliable prompts and automation flows that turn LLMs into production-grade tools for content, analysis, and decision support.',
+      'Bridging the gap between intuitive user interfaces and robust server-side logic to deliver complete, end-to-end applications seamlessly.',
   },
   {
     number: '05',
-    title: 'Data Analysis & Visualization',
+    title: 'Software Development',
     description:
-      'Exploring datasets with Python (Pandas, NumPy, Seaborn) and Power BI — turning raw numbers into clear insights and dashboards stakeholders can act on.',
+      'Engineering custom software solutions tailored to business needs with clean, maintainable code, robust architecture, and modern best practices.',
+  },
+  {
+    number: '06',
+    title: 'Back End Development',
+    description:
+      'Developing secure and scalable server-side applications, APIs, and microservices to power dynamic digital platforms efficiently.',
   },
 ];
 

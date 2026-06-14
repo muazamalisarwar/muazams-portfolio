@@ -18,9 +18,35 @@ const ParticleBackground = () => {
     mountRef.current.appendChild(renderer.domElement);
 
     // 2. Create Particles
-    const particlesCount = 800; // Dense enough for a beautiful cinematic effect
-    const positions = new Float32Array(particlesCount * 3);
-    const colors = new Float32Array(particlesCount * 3);
+    // Circular particle texture with glowing effect
+    const createCircleTexture = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 64; // Increased size for better glow resolution
+      canvas.height = 64;
+      const context = canvas.getContext('2d');
+      if (context) {
+        // Create radial gradient for a soft glow center
+        const gradient = context.createRadialGradient(32, 32, 0, 32, 32, 32);
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+        gradient.addColorStop(0.2, 'rgba(255, 255, 255, 0.8)');
+        gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.2)');
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, 64, 64);
+      }
+      return new THREE.CanvasTexture(canvas);
+    };
+
+    const particleTexture = createCircleTexture();
+    const particleMeshes: { mesh: THREE.Points; speed: number }[] = [];
+
+    // 3 depth layers for parallax effect
+    const layers = [
+      { count: 500, size: 0.15, speed: 0.015, opacity: 0.3, zOffset: -15 }, // Distant, slow
+      { count: 300, size: 0.25, speed: 0.03, opacity: 0.5, zOffset: -5 },   // Middle
+      { count: 100, size: 0.4, speed: 0.06, opacity: 0.8, zOffset: 2 },     // Foreground, fast
+    ];
 
     // Subtle purple/blue colors for glassmorphism theme
     const colorChoices = [
@@ -29,49 +55,40 @@ const ParticleBackground = () => {
       new THREE.Color('#61bafb'), // subtle blue
     ];
 
-    for (let i = 0; i < particlesCount * 3; i += 3) {
-      // Spread particles around
-      positions[i] = (Math.random() - 0.5) * 20;     // x
-      positions[i + 1] = (Math.random() - 0.5) * 20; // y
-      positions[i + 2] = (Math.random() - 0.5) * 20; // z
+    layers.forEach((layer) => {
+      const positions = new Float32Array(layer.count * 3);
+      const colors = new Float32Array(layer.count * 3);
 
-      const color = colorChoices[Math.floor(Math.random() * colorChoices.length)];
-      colors[i] = color.r;
-      colors[i + 1] = color.g;
-      colors[i + 2] = color.b;
-    }
+      for (let i = 0; i < layer.count * 3; i += 3) {
+        // Spread particles around
+        positions[i] = (Math.random() - 0.5) * 30;     // x
+        positions[i + 1] = (Math.random() - 0.5) * 30; // y
+        positions[i + 2] = (Math.random() - 0.5) * 10 + layer.zOffset; // z with depth offset
 
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-    // Circular particle texture (creates soft bokeh/stars instead of squares)
-    const createCircleTexture = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = 32;
-      canvas.height = 32;
-      const context = canvas.getContext('2d');
-      if (context) {
-        context.beginPath();
-        context.arc(16, 16, 14, 0, Math.PI * 2);
-        context.fillStyle = '#ffffff';
-        context.fill();
+        const color = colorChoices[Math.floor(Math.random() * colorChoices.length)];
+        colors[i] = color.r;
+        colors[i + 1] = color.g;
+        colors[i + 2] = color.b;
       }
-      return new THREE.CanvasTexture(canvas);
-    };
 
-    const material = new THREE.PointsMaterial({
-      size: 0.05,
-      vertexColors: true,
-      map: createCircleTexture(),
-      transparent: true,
-      opacity: 0.6,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+      const material = new THREE.PointsMaterial({
+        size: layer.size,
+        vertexColors: true,
+        map: particleTexture,
+        transparent: true,
+        opacity: layer.opacity,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+      });
+
+      const mesh = new THREE.Points(geometry, material);
+      scene.add(mesh);
+      particleMeshes.push({ mesh, speed: layer.speed });
     });
-
-    const particlesMesh = new THREE.Points(geometry, material);
-    scene.add(particlesMesh);
 
     camera.position.z = 5;
 
@@ -113,8 +130,11 @@ const ParticleBackground = () => {
       lastScrollY = currentScrollY;
 
       // Gentle drift upward and slow rotation, plus scroll velocity effect
-      particlesMesh.rotation.y = elapsedTime * 0.02 + scrollVelocity * 0.002;
-      particlesMesh.rotation.x = elapsedTime * 0.01 + scrollVelocity * 0.001;
+      // Parallax rotation across different layers
+      particleMeshes.forEach(({ mesh, speed }) => {
+        mesh.rotation.y = elapsedTime * speed + scrollVelocity * (speed * 0.1);
+        mesh.rotation.x = elapsedTime * (speed * 0.5) + scrollVelocity * (speed * 0.05);
+      });
       
       // Parallax mouse effect
       targetX = mouseX * 0.5;
@@ -137,17 +157,23 @@ const ParticleBackground = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         mountRef.current.removeChild(renderer.domElement);
       }
-      geometry.dispose();
-      material.dispose();
+      particleMeshes.forEach(({ mesh }) => {
+        mesh.geometry.dispose();
+        (mesh.material as THREE.Material).dispose();
+      });
       renderer.dispose();
     };
   }, []);
 
   return (
-    <div 
-      ref={mountRef} 
-      className="fixed inset-0 z-0 pointer-events-none bg-[#08080A]"
-    />
+    <>
+      <div 
+        ref={mountRef} 
+        className="fixed inset-0 z-0 pointer-events-none bg-[#08080A]"
+      />
+      {/* Subtle overlay blur to enhance glowing aesthetic and modern look */}
+      <div className="fixed inset-0 z-0 pointer-events-none bg-gradient-to-b from-transparent to-[#08080A]/80" />
+    </>
   );
 };
 
