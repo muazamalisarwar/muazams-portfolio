@@ -56,7 +56,13 @@ const ContactSection = () => {
       });
 
       if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
+        const text = await res.text();
+        let errorData;
+        try {
+          errorData = JSON.parse(text);
+        } catch (e) {
+          throw new Error(`Server Error (${res.status}): ${text.substring(0, 100)}...`);
+        }
         throw new Error(errorData.error || 'Failed to send message');
       }
       
