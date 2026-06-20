@@ -257,6 +257,14 @@ function AnimatedCard({ card, index, total, containerProgress }: AnimatedCardPro
   const STACK_OFFSET = 16; // px per level
   const topOffset    = STACK_OFFSET * index;
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
+    e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
+  };
+
   return (
     <motion.div
       className="absolute inset-x-0"
@@ -271,15 +279,26 @@ function AnimatedCard({ card, index, total, containerProgress }: AnimatedCardPro
     >
       <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
         {/* Card glass surface */}
-        <div className="relative rounded-[18px] sm:rounded-[24px] overflow-hidden scroll-card-glass border border-white/[0.08]">
-          {/* Top amber shimmer */}
-          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-amber-400/50 to-transparent" />
-          {/* Bottom subtle line */}
-          <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent" />
-          {/* Ambient inner glow */}
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/[0.04] via-transparent to-transparent pointer-events-none" />
+        <div 
+          onMouseMove={handleMouseMove}
+          className="relative rounded-[18px] sm:rounded-[24px] overflow-hidden scroll-card-glass border border-white/[0.08] group/card"
+        >
+          {/* Dynamic mouse glow */}
+          <div 
+            className="pointer-events-none absolute -inset-px rounded-[18px] sm:rounded-[24px] opacity-0 transition duration-300 group-hover/card:opacity-100 z-0"
+            style={{
+              background: `radial-gradient(800px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(251,191,36,0.06), transparent 40%)`
+            }}
+          />
 
-          <div className="relative z-10 p-7 sm:p-10 md:p-12">
+          {/* Top amber shimmer */}
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-amber-400/50 to-transparent z-10" />
+          {/* Bottom subtle line */}
+          <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent z-10" />
+          {/* Ambient inner glow */}
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/[0.04] via-transparent to-transparent pointer-events-none z-0" />
+
+          <div className="relative z-20 p-7 sm:p-10 md:p-12">
             <card.Content />
           </div>
         </div>

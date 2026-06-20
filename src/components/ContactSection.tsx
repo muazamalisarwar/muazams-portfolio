@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Mail, MessageCircle, Briefcase, Code2, ArrowUpRight } from 'lucide-react';
+import Magnet from './Magnet';
 import FadeIn from './FadeIn';
 
 interface ContactMethod {
@@ -150,22 +151,27 @@ const ContactSection = () => {
                 />
               </div>
 
-              <button 
-                type="submit" 
-                disabled={isSubmitting}
-                className="mt-4 group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-full bg-white/10 backdrop-blur-md border border-white/20 px-8 py-5 text-sm font-medium uppercase tracking-[0.2em] text-[#D7E2EA] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] transition-all duration-300 hover:scale-[1.02] hover:bg-white/20 hover:border-white/30 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <span className="relative z-10 flex items-center gap-3">
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
-                  {!isSubmitting && (
-                    <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="22" y1="2" x2="11" y2="13"></line>
-                      <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                    </svg>
-                  )}
-                </span>
-                <div className="absolute inset-0 z-0 h-full w-full bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full transition-transform duration-700 group-hover:translate-x-full" />
-              </button>
+              {/* Submit Button */}
+              <div className="pt-2">
+                <Magnet padding={40} strength={3}>
+                  <button 
+                    type="submit" 
+                    disabled={isSubmitting}
+                    className="w-full mt-4 group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-full bg-white/10 backdrop-blur-md border border-white/20 px-8 py-5 text-sm font-medium uppercase tracking-[0.2em] text-[#D7E2EA] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] transition-all duration-300 hover:scale-[1.02] hover:bg-white/20 hover:border-white/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <span className="relative z-10 flex items-center gap-3">
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
+                      {!isSubmitting && (
+                        <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="22" y1="2" x2="11" y2="13"></line>
+                          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                      )}
+                    </span>
+                    <div className="absolute inset-0 z-0 h-full w-full bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full transition-transform duration-700 group-hover:translate-x-full" />
+                  </button>
+                </Magnet>
+              </div>
 
               {submitStatus === 'success' && (
                 <p className="text-green-400 text-sm mt-2 text-center">Message sent successfully!</p>

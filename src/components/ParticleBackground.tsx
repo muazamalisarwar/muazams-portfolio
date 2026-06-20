@@ -106,11 +106,15 @@ const ParticleBackground = () => {
     };
     document.addEventListener('mousemove', onDocumentMouseMove);
 
-    // Handle Resize
+    // Handle Resize with debounce
+    let resizeTimeout: ReturnType<typeof setTimeout>;
     const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }, 200);
     };
     window.addEventListener('resize', handleResize);
 
