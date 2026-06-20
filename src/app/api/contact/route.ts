@@ -1,10 +1,18 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(req: Request) {
   try {
+    const apiKey = process.env.RESEND_API_KEY;
+    
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: 'Server Configuration Error: Missing RESEND_API_KEY' },
+        { status: 500 }
+      );
+    }
+
+    const resend = new Resend(apiKey);
     const { name, email, message } = await req.json();
 
     if (!name || !email || !message) {
@@ -35,7 +43,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, data });
   } catch (error: any) {
     return NextResponse.json(
-      { error: 'Failed to send email' },
+      { error: error.message || 'Failed to send email due to an unknown server error.' },
       { status: 500 }
     );
   }
