@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import { Mail, MessageCircle, Briefcase, Code2, ArrowUpRight } from 'lucide-react';
 import FadeIn from './FadeIn';
 
@@ -37,6 +38,33 @@ const CONTACT_METHODS: ContactMethod[] = [
 ];
 
 const ContactSection = () => {
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) throw new Error('Failed to send message');
+      
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section
       id="contact"
@@ -57,7 +85,7 @@ const ContactSection = () => {
         {/* Left side: Form */}
         <div className="w-full lg:w-3/5">
           <FadeIn delay={0.15} y={30}>
-            <form className="flex flex-col gap-6 sm:gap-8 rounded-[32px] sm:rounded-[40px] bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] p-8 sm:p-10 md:p-12">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6 sm:gap-8 rounded-[32px] sm:rounded-[40px] bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] p-8 sm:p-10 md:p-12">
               <div className="flex flex-col gap-2 mb-2">
                 <h3 className="font-medium text-[#D7E2EA]" style={{ fontSize: 'clamp(1.5rem, 3vw, 2.2rem)' }}>
                   Send a message
@@ -74,6 +102,9 @@ const ContactSection = () => {
                   </label>
                   <input 
                     type="text" 
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-[#D7E2EA] outline-none focus:border-white/30 focus:bg-white/10 transition-all duration-300 placeholder:text-[#D7E2EA]/30 font-light" 
                     placeholder="Muazam Ali" 
                   />
@@ -84,6 +115,9 @@ const ContactSection = () => {
                   </label>
                   <input 
                     type="email" 
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-[#D7E2EA] outline-none focus:border-white/30 focus:bg-white/10 transition-all duration-300 placeholder:text-[#D7E2EA]/30 font-light" 
                     placeholder="mail@example.com" 
                   />
@@ -96,24 +130,37 @@ const ContactSection = () => {
                 </label>
                 <textarea 
                   rows={5} 
+                  required
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-[#D7E2EA] outline-none focus:border-white/30 focus:bg-white/10 transition-all duration-300 placeholder:text-[#D7E2EA]/30 font-light resize-none" 
                   placeholder="Tell me about your project or opportunity..."
                 />
               </div>
 
               <button 
-                type="button" 
-                className="mt-4 group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-full bg-white/10 backdrop-blur-md border border-white/20 px-8 py-5 text-sm font-medium uppercase tracking-[0.2em] text-[#D7E2EA] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] transition-all duration-300 hover:scale-[1.02] hover:bg-white/20 hover:border-white/30"
+                type="submit" 
+                disabled={isSubmitting}
+                className="mt-4 group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-full bg-white/10 backdrop-blur-md border border-white/20 px-8 py-5 text-sm font-medium uppercase tracking-[0.2em] text-[#D7E2EA] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] transition-all duration-300 hover:scale-[1.02] hover:bg-white/20 hover:border-white/30 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <span className="relative z-10 flex items-center gap-3">
-                  Send Message
-                  <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="22" y1="2" x2="11" y2="13"></line>
-                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                  </svg>
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                  {!isSubmitting && (
+                    <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="22" y1="2" x2="11" y2="13"></line>
+                      <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                  )}
                 </span>
                 <div className="absolute inset-0 z-0 h-full w-full bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full transition-transform duration-700 group-hover:translate-x-full" />
               </button>
+
+              {submitStatus === 'success' && (
+                <p className="text-green-400 text-sm mt-2 text-center">Message sent successfully!</p>
+              )}
+              {submitStatus === 'error' && (
+                <p className="text-red-400 text-sm mt-2 text-center">Failed to send message. Please try again.</p>
+              )}
             </form>
           </FadeIn>
         </div>
