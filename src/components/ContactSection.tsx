@@ -41,6 +41,7 @@ const ContactSection = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,12 +55,17 @@ const ContactSection = () => {
         body: JSON.stringify(formData),
       });
 
-      if (!res.ok) throw new Error('Failed to send message');
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to send message');
+      }
       
       setSubmitStatus('success');
       setFormData({ name: '', email: '', message: '' });
-    } catch (error) {
+      setErrorMessage('');
+    } catch (error: any) {
       setSubmitStatus('error');
+      setErrorMessage(error.message || 'Failed to send message. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -159,7 +165,7 @@ const ContactSection = () => {
                 <p className="text-green-400 text-sm mt-2 text-center">Message sent successfully!</p>
               )}
               {submitStatus === 'error' && (
-                <p className="text-red-400 text-sm mt-2 text-center">Failed to send message. Please try again.</p>
+                <p className="text-red-400 text-sm mt-2 text-center">{errorMessage}</p>
               )}
             </form>
           </FadeIn>

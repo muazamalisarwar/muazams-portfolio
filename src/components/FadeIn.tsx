@@ -1,6 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
-import type { ReactNode, ElementType } from 'react';
+import React, { type ReactNode, type ElementType } from 'react';
 
 interface FadeInProps {
   children: ReactNode;
@@ -26,7 +26,8 @@ const FadeIn = ({
   style,
 }: FadeInProps) => {
   // motion.create() supports dynamic element types in framer-motion v12
-  const MotionComponent = motion.create(as);
+  // Memoize it so it doesn't recreate the component type on every render (which causes remounting and focus loss)
+  const MotionComponent = React.useMemo(() => motion.create(as), [as]);
 
   return (
     <MotionComponent
