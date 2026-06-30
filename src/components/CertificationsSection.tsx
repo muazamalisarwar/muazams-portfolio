@@ -5,7 +5,9 @@ import FadeIn from './FadeIn';
 import { Award, Eye, X } from 'lucide-react';
 
 const CERTIFICATIONS = [
-  { name: 'Elementary Data Structures', issuer: 'Certification' },
+  { name: 'Fundamentals of Machine Learning', issuer: 'Saylor Academy', image: '/certificates/Fundamentals of Machine Learning.png' },
+  { name: 'Building with Artificial Intelligence', issuer: 'Saylor Academy', image: '/certificates/Building with Artificial Intelligence.png' },
+  { name: 'Elementary Data Structures', issuer: 'Saylor Academy', image: '/certificates/Elementary Data Structures By Saylor Academy.png' },
   { name: 'Advance SQL Hard Certification', issuer: 'Skill Certify', image: '/certificates/Advance Sql Devloper Certification.png' },
   { name: 'Agents and Workflows', issuer: 'OpenAI', image: '/certificates/Agents And WorkFlows-Open ai.png' },
   { name: 'Generative AI Introduction', issuer: 'Microsoft', image: '/certificates/Generative Ai Introduction.png' },
