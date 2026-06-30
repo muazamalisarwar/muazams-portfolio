@@ -5,6 +5,9 @@ import FadeIn from './FadeIn';
 import { Award, Eye, X } from 'lucide-react';
 
 const CERTIFICATIONS = [
+  { name: 'AI Fluency Framework & Foundations', issuer: 'Anthropic', image: '/certificates/AI Fluency Framework & Foundations_By Anthropic.png' },
+  { name: 'Claude Platform 101', issuer: 'Anthropic', image: '/certificates/Claude Platform 101_By Anthropic.png' },
+  { name: 'Web Development - Advanced CSS3 Selectors', issuer: 'Online Course', image: '/certificates/Web Development - Advanced CSS3 Selectors and.png' },
   { name: 'Fundamentals of Machine Learning', issuer: 'Saylor Academy', image: '/certificates/Fundamentals of Machine Learning.png' },
   { name: 'Generative AI Introduction', issuer: 'Microsoft', image: '/certificates/Generative Ai Introduction.png' },
   { name: 'Advance SQL Hard Certification', issuer: 'Skill Certify', image: '/certificates/Advance Sql Devloper Certification.png' },
