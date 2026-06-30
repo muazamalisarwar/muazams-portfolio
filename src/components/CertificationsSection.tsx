@@ -6,18 +6,18 @@ import { Award, Eye, X } from 'lucide-react';
 
 const CERTIFICATIONS = [
   { name: 'Fundamentals of Machine Learning', issuer: 'Saylor Academy', image: '/certificates/Fundamentals of Machine Learning.png' },
-  { name: 'Building with Artificial Intelligence', issuer: 'Saylor Academy', image: '/certificates/Building with Artificial Intelligence.png' },
-  { name: 'Elementary Data Structures', issuer: 'Saylor Academy', image: '/certificates/Elementary Data Structures By Saylor Academy.png' },
-  { name: 'Advance SQL Hard Certification', issuer: 'Skill Certify', image: '/certificates/Advance Sql Devloper Certification.png' },
-  { name: 'Agents and Workflows', issuer: 'OpenAI', image: '/certificates/Agents And WorkFlows-Open ai.png' },
   { name: 'Generative AI Introduction', issuer: 'Microsoft', image: '/certificates/Generative Ai Introduction.png' },
-  { name: 'Summarize and simplify information with 365 Copilot', issuer: 'Microsoft', image: '/certificates/Summarize and simplify information with 365 Copilot.png' },
+  { name: 'Advance SQL Hard Certification', issuer: 'Skill Certify', image: '/certificates/Advance Sql Devloper Certification.png' },
+  { name: 'Building with Artificial Intelligence', issuer: 'Saylor Academy', image: '/certificates/Building with Artificial Intelligence.png' },
+  { name: 'Agents and Workflows', issuer: 'OpenAI', image: '/certificates/Agents And WorkFlows-Open ai.png' },
   { name: 'Python Essentials 1 & 2', issuer: 'FreeCodeCamp' },
+  { name: 'Elementary Data Structures', issuer: 'Saylor Academy', image: '/certificates/Elementary Data Structures By Saylor Academy.png' },
+  { name: 'Summarize and simplify information with 365 Copilot', issuer: 'Microsoft', image: '/certificates/Summarize and simplify information with 365 Copilot.png' },
   { name: 'Prompt Engineering for ChatGPT', issuer: 'Coursera' },
   { name: 'Web Development Fundamentals', issuer: 'IBM SkillsBuild' },
   { name: 'C++ Essentials 1 & 2', issuer: 'FreeCodeCamp' },
-  { name: 'Introduction to Networks (CCNA 1)', issuer: 'Cisco Networking Academy' },
   { name: 'Software Development Lifecycle (SDLC)', issuer: 'Coursera' },
+  { name: 'Introduction to Networks (CCNA 1)', issuer: 'Cisco Networking Academy' },
   { name: 'Pitman International & Global Training Centres-English', issuer: 'Year: 2024' },
 ];
 
