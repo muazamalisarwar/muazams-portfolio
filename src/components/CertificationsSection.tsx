@@ -5,6 +5,7 @@ import FadeIn from './FadeIn';
 import { Award, Eye, X } from 'lucide-react';
 
 const CERTIFICATIONS = [
+  { name: 'Elementary Data Structures', issuer: 'Certification' },
   { name: 'Advance SQL Hard Certification', issuer: 'Skill Certify', image: '/certificates/Advance Sql Devloper Certification.png' },
   { name: 'Agents and Workflows', issuer: 'OpenAI', image: '/certificates/Agents And WorkFlows-Open ai.png' },
   { name: 'Generative AI Introduction', issuer: 'Microsoft', image: '/certificates/Generative Ai Introduction.png' },
