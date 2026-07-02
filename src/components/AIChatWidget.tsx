@@ -15,7 +15,7 @@ const PREDEFINED_QUESTIONS = [
 export default function AIChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
-  const { messages, status, sendMessage } = useChat();
+  const { messages, status, sendMessage } = useChat({ streamProtocol: 'text' });
   const isLoading = status === 'submitted' || status === 'streaming';
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,13 +25,13 @@ export default function AIChatWidget() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
-    sendMessage({ text: input });
+    if (sendMessage) sendMessage({ text: input });
     setInput('');
   };
 
   const handleChipClick = (text: string) => {
     if (isLoading) return;
-    sendMessage({ text });
+    if (sendMessage) sendMessage({ text });
   };
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -145,17 +145,28 @@ export default function AIChatWidget() {
                     }`}
                   >
                     {(() => {
-                      const text = typeof m.content === 'string' && m.content.trim() !== '' 
-                        ? m.content 
-                        : (m.parts?.filter((p: any) => p.type === 'text').map((p: any) => p.text).join('') || '');
+                      let text = '';
+                      if (typeof m.content === 'string' && m.content.trim() !== '') {
+                        text = m.content;
+                      } else if (Array.isArray(m.content)) {
+                        text = m.content.filter((p: any) => p.type === 'text').map((p: any) => p.text).join('');
+                      } else if (Array.isArray(m.parts)) {
+                        text = m.parts.filter((p: any) => p.type === 'text').map((p: any) => p.text).join('');
+                      } else if (typeof m.text === 'string') {
+                        text = m.text;
+                      }
+                      
+                      const displayText = text || JSON.stringify(m);
 
                       return m.role === 'user' ? (
-                        <span>{text}</span>
+                        <span className="break-words">{displayText}</span>
                       ) : (
-                        <div className="space-y-3 [&>p]:leading-relaxed [&>ul]:list-disc [&>ul]:pl-5 [&>ol]:list-decimal [&>ol]:pl-5 [&>h1]:font-semibold [&>h2]:font-semibold [&>h3]:font-semibold [&>h4]:font-semibold [&_strong]:font-semibold [&_strong]:text-white">
-                          <ReactMarkdown>
-                            {text}
-                          </ReactMarkdown>
+                        <div className="space-y-3 [&>p]:leading-relaxed [&>ul]:list-disc [&>ul]:pl-5 [&>ol]:list-decimal [&>ol]:pl-5 [&>h1]:font-semibold [&>h2]:font-semibold [&>h3]:font-semibold [&>h4]:font-semibold [&_strong]:font-semibold [&_strong]:text-white break-words">
+                          {text ? (
+                            <ReactMarkdown>{text}</ReactMarkdown>
+                          ) : (
+                            <span className="text-[10px] break-words">{displayText}</span>
+                          )}
                         </div>
                       );
                     })()}
