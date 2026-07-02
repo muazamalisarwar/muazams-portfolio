@@ -23,9 +23,14 @@ ${JSON.stringify(PORTFOLIO_DATA, null, 2)}
 ---
 `;
 
+    const coreMessages = messages.map((m: any) => ({
+      role: m.role || 'user',
+      content: m.content || (m.parts ? m.parts.map((p: any) => p.text).join('') : '') || (m.text ? m.text : '')
+    }));
+
     const result = streamText({
       model: google('gemini-flash-latest'),
-      messages,
+      messages: coreMessages,
       system: systemPrompt,
       temperature: 0.2, // low temperature for more factual responses
     });
