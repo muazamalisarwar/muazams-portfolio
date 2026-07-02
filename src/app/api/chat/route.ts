@@ -1,5 +1,5 @@
 import { google } from '@ai-sdk/google';
-import { streamText, convertToModelMessages } from 'ai';
+import { streamText } from 'ai';
 import { PORTFOLIO_DATA } from '@/data/portfolio';
 
 export const maxDuration = 30;
@@ -23,11 +23,9 @@ ${JSON.stringify(PORTFOLIO_DATA, null, 2)}
 ---
 `;
 
-    const modelMessages = await convertToModelMessages(messages);
-
     const result = streamText({
       model: google('gemini-flash-latest'),
-      messages: modelMessages,
+      messages,
       system: systemPrompt,
       temperature: 0.2, // low temperature for more factual responses
     });
