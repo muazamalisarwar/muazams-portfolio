@@ -15,7 +15,7 @@ const PREDEFINED_QUESTIONS = [
 export default function AIChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
-  const { messages, status, sendMessage } = useChat();
+  const { messages, status, sendMessage, error } = useChat();
   const isLoading = status === 'submitted' || status === 'streaming';
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,12 +95,13 @@ export default function AIChatWidget() {
                         <Bot size={28} className="text-white" />
                       </div>
                     </div>
-                    <div>
-                      <h4 className="text-[#D7E2EA] font-medium text-lg">Muazam's AI</h4>
-                      <p className="text-[#D7E2EA]/50 text-sm mt-1 px-4">
-                        I know everything about Muazam's experience, skills, and projects. Ask me anything!
+                    {messages.length === 0 && !error && (
+                    <div className="flex h-full items-center justify-center p-4 text-center">
+                      <p className="text-sm text-gray-400">
+                        Hi! I'm Muazam's AI assistant. Ask me about his experience, skills, or projects!
                       </p>
                     </div>
+                  )}
                   </motion.div>
                   
                   <div className="flex flex-wrap justify-center gap-2 w-full max-w-[95%]">
@@ -120,6 +121,15 @@ export default function AIChatWidget() {
                     ))}
                   </div>
                 </div>
+              )}
+              {error && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center justify-center p-3 my-2 mx-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs text-center"
+                >
+                  {error.message || "You have exceeded your Gemini API quota limit. Please wait 1 minute and try again."}
+                </motion.div>
               )}
               {messages.map((m) => (
                 <motion.div
