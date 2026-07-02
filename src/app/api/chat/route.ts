@@ -29,7 +29,7 @@ ${JSON.stringify(PORTFOLIO_DATA, null, 2)}
     }));
 
     const result = streamText({
-      model: google('gemini-pro'),
+      model: google('gemini-2.5-flash-lite'),
       messages: coreMessages,
       system: systemPrompt,
       temperature: 0.2, // low temperature for more factual responses
