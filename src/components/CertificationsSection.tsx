@@ -23,14 +23,22 @@ const CertificationCard = ({ cert, index, total, onView }: CertificationCardProp
   const targetScale = 1 - (total - 1 - index) * 0.03;
   const scale = useTransform(scrollYProgress, [0, 1], [1, targetScale]);
 
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div
       ref={cardRef}
-      className="sticky top-24 md:top-32 w-full h-[35vh] sm:h-[40vh]"
-      style={{ top: `${96 + index * 28}px` }}
+      className="relative md:sticky md:top-32 w-full h-auto md:h-[40vh] mb-8 md:mb-0"
+      style={{ top: !isMobile ? `${96 + index * 28}px` : undefined }}
     >
       <motion.article
-        style={{ scale }}
+        style={!isMobile ? { scale } : {}}
         className="origin-top mx-auto max-w-5xl w-full flex flex-col sm:flex-row items-center sm:items-start sm:justify-between gap-5 sm:gap-8 p-6 sm:p-8 md:p-10 rounded-[32px] sm:rounded-[40px] bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]"
       >
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 sm:gap-8 w-full sm:w-auto text-center sm:text-left">

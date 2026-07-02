@@ -1,5 +1,5 @@
 'use client';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import FadeIn from './FadeIn';
 import { PORTFOLIO_DATA } from '@/data/portfolio';
@@ -21,15 +21,23 @@ const ServiceCard = ({ service, index, total }: ServiceCardProps) => {
   const targetScale = 1 - (total - 1 - index) * 0.03;
   const scale = useTransform(scrollYProgress, [0, 1], [1, targetScale]);
 
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div
       ref={cardRef}
-      className="sticky top-24 md:top-32 w-full h-[50vh] sm:h-[60vh]"
-      style={{ top: `${96 + index * 28}px` }}
+      className="relative md:sticky md:top-32 w-full h-auto md:h-[60vh] mb-8 md:mb-0"
+      style={{ top: !isMobile ? `${96 + index * 28}px` : undefined }}
     >
       <motion.article
-        style={{ scale }}
-        className="origin-top mx-auto max-w-5xl w-full flex flex-row items-start gap-6 sm:gap-10 md:gap-14 p-8 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[40px] bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]"
+        style={!isMobile ? { scale } : {}}
+        className="origin-top mx-auto max-w-5xl w-full flex flex-col sm:flex-row items-start gap-4 sm:gap-10 md:gap-14 p-6 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[40px] bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]"
       >
         <div
           className="shrink-0 font-black text-[#D7E2EA]/80 leading-none"

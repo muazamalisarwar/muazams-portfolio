@@ -1,5 +1,5 @@
 'use client';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import FadeIn from './FadeIn';
 import LiveProjectButton from './LiveProjectButton';
@@ -33,14 +33,22 @@ const ProjectCard = ({ project, index, total, containerRef }: ProjectCardProps) 
   const targetScale = 1 - (total - 1 - index) * 0.03;
   const scale = useTransform(scrollYProgress, [0, 1], [1, targetScale]);
 
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div
       ref={cardRef}
-      className="sticky top-24 md:top-32 h-auto md:h-[85vh] min-h-[85vh] w-full"
-      style={{ top: `${96 + index * 28}px` }}
+      className="relative md:sticky md:top-32 h-auto md:h-[85vh] w-full mb-12 md:mb-0"
+      style={{ top: !isMobile ? `${96 + index * 28}px` : undefined }}
     >
       <motion.article
-        style={{ scale }}
+        style={!isMobile ? { scale } : {}}
         className="origin-top mx-auto h-full w-full flex flex-col gap-4 sm:gap-6 md:gap-8 rounded-[32px] sm:rounded-[40px] md:rounded-[50px] bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] p-4 sm:p-6 md:p-8"
       >
         {/* Top row: number + meta + button */}

@@ -49,8 +49,8 @@ export default function AIChatWidget() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed bottom-24 right-5 left-5 sm:left-auto sm:right-8 z-50 w-[calc(100vw-40px)] sm:w-[420px] h-[500px] sm:h-[550px] max-h-[80vh] flex flex-col rounded-3xl bg-[#030303]/80 backdrop-blur-3xl border border-white/10 shadow-[0_20px_60px_-15px_rgba(176,114,255,0.4)] overflow-hidden"
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed inset-0 z-50 sm:inset-auto sm:bottom-24 sm:right-6 sm:w-[400px] sm:h-[600px] flex flex-col bg-[#030303]/80 backdrop-blur-3xl border border-white/10 shadow-[0_20px_60px_-15px_rgba(176,114,255,0.4)] overflow-hidden sm:rounded-3xl"
           >
             {/* Subtle background glow */}
             <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
