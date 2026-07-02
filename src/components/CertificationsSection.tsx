@@ -3,29 +3,10 @@ import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import FadeIn from './FadeIn';
 import { Award, Eye, X } from 'lucide-react';
-
-const CERTIFICATIONS = [
-  { name: 'AI Fluency Framework & Foundations', issuer: 'Anthropic', image: '/certificates/AI Fluency Framework & Foundations_By Anthropic.png' },
-  { name: 'Fundamentals of Machine Learning', issuer: 'Saylor Academy', image: '/certificates/Fundamentals of Machine Learning.png' },
-  { name: 'Claude Platform 101', issuer: 'Anthropic', image: '/certificates/Claude Platform 101_By Anthropic.png' },
-  { name: 'Generative AI Introduction', issuer: 'Microsoft', image: '/certificates/Generative Ai Introduction.png' },
-  { name: 'Building with Artificial Intelligence', issuer: 'Saylor Academy', image: '/certificates/Building with Artificial Intelligence.png' },
-  { name: 'Python Essentials 1 & 2', issuer: 'FreeCodeCamp' },
-  { name: 'Summarize and simplify information with 365 Copilot', issuer: 'Microsoft', image: '/certificates/Summarize and simplify information with 365 Copilot.png' },
-  { name: 'Elementary Data Structures', issuer: 'Saylor Academy', image: '/certificates/Elementary Data Structures By Saylor Academy.png' },
-  { name: 'Prompt Engineering for ChatGPT', issuer: 'Coursera' },
-  { name: 'Web Development - Advanced CSS3 Selectors', issuer: 'Online Course', image: '/certificates/Web Development - Advanced CSS3 Selectors and.png' },
-  { name: 'Advance SQL Hard Certification', issuer: 'Skill Certify', image: '/certificates/Advance Sql Devloper Certification.png' },
-  { name: 'Agents and Workflows', issuer: 'OpenAI', image: '/certificates/Agents And WorkFlows-Open ai.png' },
-  { name: 'C++ Essentials 1 & 2', issuer: 'FreeCodeCamp' },
-  { name: 'Software Development Lifecycle (SDLC)', issuer: 'Coursera' },
-  { name: 'Web Development Fundamentals', issuer: 'IBM SkillsBuild' },
-  { name: 'Introduction to Networks (CCNA 1)', issuer: 'Cisco Networking Academy' },
-  { name: 'Pitman International & Global Training Centres-English', issuer: 'Year: 2024' },
-];
+import { PORTFOLIO_DATA } from '@/data/portfolio';
 
 interface CertificationCardProps {
-  cert: typeof CERTIFICATIONS[0];
+  cert: typeof PORTFOLIO_DATA.certifications[0];
   index: number;
   total: number;
   onView: (image: string) => void;
@@ -126,12 +107,12 @@ const CertificationsSection = () => {
       </FadeIn>
 
       <div ref={containerRef} className="mx-auto max-w-5xl relative pb-20">
-        {CERTIFICATIONS.map((cert, i) => (
+        {PORTFOLIO_DATA.certifications.map((cert, i) => (
           <CertificationCard
             key={cert.name}
             cert={cert}
             index={i}
-            total={CERTIFICATIONS.length}
+            total={PORTFOLIO_DATA.certifications.length}
             onView={(image) => setSelectedCert(image)}
           />
         ))}

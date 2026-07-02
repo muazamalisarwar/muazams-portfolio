@@ -6,11 +6,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import FadeIn from './FadeIn';
 import ContactButton from './ContactButton';
 import AnimatedText from './AnimatedText';
+import { PORTFOLIO_DATA } from '@/data/portfolio';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const ABOUT_TEXT =
-  "Results-driven Computer Science student at University of Education Lahore with hands-on experience in full stack development, Android applications, and AI/ML-based computer vision systems. Proficient in Python, Java, C++, and JavaScript with practical knowledge of RESTful APIs, OOP design patterns, Firebase, and SQL/NoSQL databases. Seeking a Software Development or AI/ML internship to contribute to real-world engineering teams.";
 
 const AboutSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -121,7 +119,7 @@ const AboutSection = () => {
 
           <div className="flex flex-col items-center gap-12 sm:gap-16 md:gap-20">
                     <AnimatedText
-                      text={ABOUT_TEXT}
+                      text={PORTFOLIO_DATA.about.text}
                       className="font-medium leading-relaxed text-[#D7E2EA] max-w-[560px]"
                       style={{ fontSize: 'clamp(1rem, 2vw, 1.35rem)' }}
                     />
@@ -129,24 +127,7 @@ const AboutSection = () => {
                     {/* Skills */}
                     <FadeIn delay={0.15} className="w-full max-w-3xl">
                       <div className="flex flex-col gap-5 sm:gap-6">
-                        {[
-                          {
-                            label: 'Programming Languages',
-                            items: ['Python', 'Java', 'C++', 'JavaScript', 'HTML', 'CSS'],
-                          },
-                          {
-                            label: 'Mobile Development',
-                            items: ['Android Studio', 'Firebase', 'XML Layouts'],
-                          },
-                          {
-                            label: 'AI / ML & Computer Vision',
-                            items: ['OpenCV', 'MediaPipe', 'TensorFlow', 'scikit-learn', 'Pandas', 'NumPy'],
-                          },
-                          {
-                            label: 'Frameworks & Tools',
-                            items: ['React.js', 'Node.js', 'Spring Boot', 'Git/GitHub', 'MySQL', 'Oracle 21c', 'RESTful APIs', 'Postman'],
-                          },
-                        ].map((group) => (
+                        {PORTFOLIO_DATA.about.skills.map((group) => (
                           <div
                             key={group.label}
                             className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-5"

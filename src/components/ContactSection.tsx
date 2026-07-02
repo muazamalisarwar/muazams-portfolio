@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Mail, MessageCircle, Briefcase, Code2, ArrowUpRight } from 'lucide-react';
 import Magnet from './Magnet';
 import FadeIn from './FadeIn';
+import { PORTFOLIO_DATA } from '@/data/portfolio';
 
 interface ContactMethod {
   icon: typeof Mail;
@@ -10,33 +11,6 @@ interface ContactMethod {
   value: string;
   href: string;
 }
-
-const CONTACT_METHODS: ContactMethod[] = [
-  {
-    icon: Mail,
-    label: 'Email',
-    value: 'muazamalisarwarofficial@gmail.com',
-    href: 'mailto:muazamalisarwarofficial@gmail.com',
-  },
-  {
-    icon: MessageCircle,
-    label: 'Phone / WhatsApp',
-    value: '+92 326 8848703',
-    href: 'tel:+923268848703',
-  },
-  {
-    icon: Briefcase,
-    label: 'LinkedIn',
-    value: 'LinkedIn Profile',
-    href: 'https://linkedin.com',
-  },
-  {
-    icon: Code2,
-    label: 'GitHub',
-    value: 'GitHub Profile',
-    href: 'https://github.com',
-  },
-];
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -185,7 +159,7 @@ const ContactSection = () => {
 
         {/* Right side: Contact Methods */}
         <div className="w-full lg:w-2/5 flex flex-col gap-4 sm:gap-5 md:gap-6">
-          {CONTACT_METHODS.map((method, i) => {
+          {PORTFOLIO_DATA.contact.map((method, i) => {
             const Icon = method.icon;
             const isExternal = method.href.startsWith('http');
 

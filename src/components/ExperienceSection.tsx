@@ -2,38 +2,10 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import FadeIn from './FadeIn';
-
-const EXPERIENCES = [
-  {
-    company: 'Askari Colony Management (ACM)',
-    role: 'Software Development Intern — ERP',
-    duration: '09/2024 – 11/2024',
-    location: 'Lahore (Askari 10)',
-    points: [
-      'Assisted in deploying an ERP complaint management system across 10+ residential offices, reducing manual request routing.',
-      'Improved UI components and form workflows, contributing to an estimated 20% reduction in complaint handling response time.',
-      'Collaborated with stakeholders to gather business requirements and validate ERP module integration.',
-      'Executed debugging, system testing, and issue resolution cycles; resolved 15+ functional defects prior to go-live.',
-      'Supported process automation initiatives to digitalize maintenance request handling, reducing paper-based coordination.'
-    ]
-  },
-  {
-    company: 'Minhaj University Lahore',
-    role: 'CMS Development Intern — Backend',
-    duration: '03/2025 – 05/2025',
-    location: 'Lahore',
-    points: [
-      'Developed and automated 3+ backend modules for the university CMS, reducing manual workload by ~30%.',
-      'Designed and implemented SQL-based database operations, improving data retrieval speed.',
-      'Applied OOP principles and REST API design patterns to improve maintainability.',
-      'Collaborated in a cross-functional Agile team to test, debug, and deploy new features.',
-      'Performed system performance analysis and code optimization, resolving bottlenecks.'
-    ]
-  }
-];
+import { PORTFOLIO_DATA } from '@/data/portfolio';
 
 interface ExperienceCardProps {
-  exp: typeof EXPERIENCES[0];
+  exp: typeof PORTFOLIO_DATA.experience[0];
   index: number;
   total: number;
 }
@@ -57,7 +29,7 @@ const ExperienceCard = ({ exp, index, total }: ExperienceCardProps) => {
     >
       <motion.article
         style={{ scale }}
-        className="origin-top mx-auto max-w-5xl w-full flex flex-col md:flex-row items-start gap-6 sm:gap-10 md:gap-14 p-8 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[40px] bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]"
+        className="origin-top mx-auto max-w-5xl w-full h-full overflow-y-auto scrollbar-thin scrollbar-thumb-white/10 flex flex-col md:flex-row items-start gap-6 sm:gap-10 md:gap-14 p-6 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[40px] bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]"
       >
         <div className="md:w-1/3 shrink-0 flex flex-col gap-2">
           <h3
@@ -119,12 +91,12 @@ const ExperienceSection = () => {
       </FadeIn>
 
       <div ref={containerRef} className="mx-auto max-w-5xl relative pb-20">
-        {EXPERIENCES.map((exp, i) => (
+        {PORTFOLIO_DATA.experience.map((exp, i) => (
           <ExperienceCard
             key={exp.company}
             exp={exp}
             index={i}
-            total={EXPERIENCES.length}
+            total={PORTFOLIO_DATA.experience.length}
           />
         ))}
       </div>

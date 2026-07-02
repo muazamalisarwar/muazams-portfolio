@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import FadeIn from './FadeIn';
 import LiveProjectButton from './LiveProjectButton';
+import { PORTFOLIO_DATA } from '@/data/portfolio';
 
 interface ProjectData {
   number: string;
@@ -13,54 +14,6 @@ interface ProjectData {
   col1Image2: string;
   col2Image: string;
 }
-
-const PROJECTS: ProjectData[] = [
-  {
-    number: '01',
-    category: 'Java · OOP · MySQL',
-    name: 'Bank Management System',
-    liveUrl: '#',
-    col1Image1: '/projects/bank_management.png',
-    col1Image2: '/projects/bank_management.png',
-    col2Image: '/projects/bank_management.png',
-  },
-  {
-    number: '02',
-    category: 'Python · MySQL',
-    name: 'CRM System',
-    liveUrl: '#',
-    col1Image1: '/projects/crm_system.png',
-    col1Image2: '/projects/crm_system.png',
-    col2Image: '/projects/crm_system.png',
-  },
-  {
-    number: '03',
-    category: 'Java · OpenCV · AI',
-    name: 'Gender and Age Detection',
-    liveUrl: '#',
-    col1Image1: '/projects/gender_age_ai.png',
-    col1Image2: '/projects/gender_age_ai.png',
-    col2Image: '/projects/gender_age_ai.png',
-  },
-  {
-    number: '04',
-    category: 'Python · NLP · Automation',
-    name: 'Virtual Assistant',
-    liveUrl: '#',
-    col1Image1: '/projects/virtual_assistant.png',
-    col1Image2: '/projects/virtual_assistant.png',
-    col2Image: '/projects/virtual_assistant.png',
-  },
-  {
-    number: '05',
-    category: 'Node.js · Security',
-    name: 'Node.js Security Project',
-    liveUrl: '#',
-    col1Image1: '/projects/nodejs_security.png',
-    col1Image2: '/projects/nodejs_security.png',
-    col2Image: '/projects/nodejs_security.png',
-  },
-];
 
 interface ProjectCardProps {
   project: ProjectData;
@@ -83,7 +36,7 @@ const ProjectCard = ({ project, index, total, containerRef }: ProjectCardProps) 
   return (
     <div
       ref={cardRef}
-      className="sticky top-24 md:top-32 h-[85vh] w-full"
+      className="sticky top-24 md:top-32 h-auto md:h-[85vh] min-h-[85vh] w-full"
       style={{ top: `${96 + index * 28}px` }}
     >
       <motion.article
@@ -122,7 +75,7 @@ const ProjectCard = ({ project, index, total, containerRef }: ProjectCardProps) 
         </div>
 
         {/* Bottom row: two-column image grid */}
-        <div className="grid grid-cols-[40%_60%] gap-3 sm:gap-4 md:gap-5 flex-1 min-h-0">
+        <div className="grid grid-cols-1 md:grid-cols-[40%_60%] gap-3 sm:gap-4 md:gap-5 flex-1 min-h-0">
           {/* Left column - 2 stacked */}
           <div className="flex flex-col gap-3 sm:gap-4 md:gap-5 min-h-0">
             <div
@@ -185,12 +138,12 @@ const ProjectsSection = () => {
       </FadeIn>
 
       <div ref={containerRef} className="mx-auto max-w-7xl">
-        {PROJECTS.map((project, i) => (
+        {PORTFOLIO_DATA.projects.map((project, i) => (
           <ProjectCard
             key={project.number}
             project={project}
             index={i}
-            total={PROJECTS.length}
+            total={PORTFOLIO_DATA.projects.length}
             containerRef={containerRef}
           />
         ))}

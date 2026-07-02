@@ -174,8 +174,8 @@ const HeroSection = () => {
       <div className="relative z-10 flex h-full flex-col">
         {/* Top bar */}
         <FadeIn delay={0} y={-20} className="relative">
-          <div className="flex items-center justify-between px-6 md:px-10 pt-6 md:pt-8">
-            <ul className="flex items-center gap-5 sm:gap-8 md:gap-12">
+          <div className="flex flex-wrap items-center justify-between gap-4 px-4 sm:px-6 md:px-10 pt-4 sm:pt-6 md:pt-8">
+            <ul className="flex flex-wrap items-center gap-4 sm:gap-8 md:gap-12">
               {NAV_LINKS.map((link) => (
                 <li key={link.label}>
                   <a

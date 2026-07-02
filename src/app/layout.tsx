@@ -3,6 +3,7 @@ import { Kanit } from 'next/font/google';
 import './globals.css';
 import ParticleBackground from '@/components/ParticleBackground';
 import SmoothScroll from '@/components/SmoothScroll';
+import AIChatWidget from '@/components/AIChatWidget';
 
 const kanit = Kanit({ subsets: ['latin'], weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({
           <div className="relative z-10 flex flex-col min-h-screen">
             {children}
           </div>
+          <AIChatWidget />
         </SmoothScroll>
       </body>
     </html>

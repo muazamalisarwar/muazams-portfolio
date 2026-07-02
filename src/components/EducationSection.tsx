@@ -4,35 +4,9 @@ import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import FadeIn from './FadeIn';
+import { PORTFOLIO_DATA } from '@/data/portfolio';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const EDUCATION = [
-  {
-    degree: 'ICS With Physics',
-    school: 'Lahore College Boys',
-    duration: '01/2021 – 12/2022',
-    location: 'Lahore',
-    cgpa: '',
-    description: ''
-  },
-  {
-    degree: 'COMPUTER SCIENCE (ADP)',
-    school: 'Minhaj University Lahore',
-    duration: '04/2023 – 07/2025',
-    location: 'Lahore',
-    cgpa: '3.74',
-    description: ''
-  },
-  {
-    degree: 'BS Computer Science (7th Semester)',
-    school: 'University Of Education',
-    duration: '08/2025 – Current',
-    location: 'Lahore',
-    cgpa: '3.65',
-    description: 'Studying Bachelor of Science in Computer Science with a strong foundation in programming, software development, and problem-solving. Gained practical experience through academic projects and hands-on laboratory work.'
-  }
-];
 
 const EducationSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -125,7 +99,7 @@ const EducationSection = () => {
         />
 
         <div className="flex flex-col gap-16 sm:gap-24 md:gap-32">
-          {EDUCATION.map((edu, i) => {
+          {PORTFOLIO_DATA.education.map((edu, i) => {
             const isEven = i % 2 === 0;
 
             return (
