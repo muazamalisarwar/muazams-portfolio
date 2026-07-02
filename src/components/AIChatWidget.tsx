@@ -156,14 +156,15 @@ export default function AIChatWidget() {
                   >
                     {(() => {
                       let text = '';
-                      if (typeof m.content === 'string' && m.content.trim() !== '') {
-                        text = m.content;
-                      } else if (Array.isArray(m.content)) {
-                        text = m.content.filter((p: any) => p.type === 'text').map((p: any) => p.text).join('');
-                      } else if (Array.isArray(m.parts)) {
-                        text = m.parts.filter((p: any) => p.type === 'text').map((p: any) => p.text).join('');
-                      } else if (typeof m.text === 'string') {
-                        text = m.text;
+                      const msg = m as any;
+                      if (typeof msg.content === 'string' && msg.content.trim() !== '') {
+                        text = msg.content;
+                      } else if (Array.isArray(msg.content)) {
+                        text = msg.content.filter((p: any) => p.type === 'text').map((p: any) => p.text).join('');
+                      } else if (Array.isArray(msg.parts)) {
+                        text = msg.parts.filter((p: any) => p.type === 'text').map((p: any) => p.text).join('');
+                      } else if (typeof msg.text === 'string') {
+                        text = msg.text;
                       }
                       
                       const displayText = text || JSON.stringify(m);
