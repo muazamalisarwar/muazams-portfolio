@@ -239,33 +239,10 @@ const HeroSection = () => {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex items-end justify-between px-6 md:px-10 pb-7 sm:pb-10 md:pb-12">
-          {/* Scroll indicator */}
-          <FadeIn delay={1.1} y={20}>
-            <a href="#about" aria-label="Scroll to next section" className="group flex flex-col items-center gap-3">
-              <span className="text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.35em] text-white/70 transition group-hover:text-white">
-                Scroll
-              </span>
-              <div className="relative h-12 w-px overflow-hidden bg-white/20">
-                <span
-                  className="absolute inset-x-0 top-0 h-1/2 w-full bg-white"
-                  style={{ animation: 'scrollLine 1.8s ease-in-out infinite' }}
-                />
-              </div>
-            </a>
-          </FadeIn>
-
-          {/* Mute toggle + Sound hint */}
-          <FadeIn delay={1.1} y={20}>
+        <div className="flex items-end px-6 md:px-10 pb-7 sm:pb-10 md:pb-12 relative w-full">
+          {/* Mute toggle + Sound hint (Moved to Left) */}
+          <FadeIn delay={1.1} y={20} className="relative z-10">
             <div className="flex items-center gap-3">
-              {showSoundHint && (
-                <span
-                  className="hidden sm:inline text-[10px] font-medium uppercase tracking-[0.25em] text-white/80"
-                  style={{ animation: 'pulseFade 2s ease-in-out infinite' }}
-                >
-                  Tap for sound
-                </span>
-              )}
               <Magnet padding={40} strength={4}>
                 <button
                   onClick={toggleMute}
@@ -286,8 +263,33 @@ const HeroSection = () => {
                   )}
                 </button>
               </Magnet>
+              {showSoundHint && (
+                <span
+                  className="hidden sm:inline text-[10px] font-medium uppercase tracking-[0.25em] text-white/80"
+                  style={{ animation: 'pulseFade 2s ease-in-out infinite' }}
+                >
+                  Tap for sound
+                </span>
+              )}
             </div>
           </FadeIn>
+
+          {/* Scroll indicator (Centered Absolutely) */}
+          <div className="absolute left-1/2 -translate-x-1/2 bottom-7 sm:bottom-10 md:bottom-12">
+            <FadeIn delay={1.1} y={20}>
+              <a href="#about" aria-label="Scroll to next section" className="group flex flex-col items-center gap-3">
+                <span className="text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.35em] text-white/70 transition group-hover:text-white">
+                  Scroll
+                </span>
+                <div className="relative h-12 w-px overflow-hidden bg-white/20">
+                  <span
+                    className="absolute inset-x-0 top-0 h-1/2 w-full bg-white"
+                    style={{ animation: 'scrollLine 1.8s ease-in-out infinite' }}
+                  />
+                </div>
+              </a>
+            </FadeIn>
+          </div>
         </div>
       </div>
 
