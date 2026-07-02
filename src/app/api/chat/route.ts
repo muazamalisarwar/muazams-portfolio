@@ -35,7 +35,7 @@ ${JSON.stringify(PORTFOLIO_DATA, null, 2)}
       temperature: 0.2, // low temperature for more factual responses
     });
 
-    return result.toTextStreamResponse();
+    return result.toUIMessageStreamResponse();
   } catch (error) {
     console.error('Chat API Error:', error);
     return new Response('Internal Server Error', { status: 500 });

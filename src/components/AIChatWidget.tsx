@@ -15,7 +15,7 @@ const PREDEFINED_QUESTIONS = [
 export default function AIChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
-  const { messages, status, sendMessage } = useChat({ streamProtocol: 'text' });
+  const { messages, status, sendMessage } = useChat();
   const isLoading = status === 'submitted' || status === 'streaming';
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
