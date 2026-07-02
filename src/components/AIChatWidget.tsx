@@ -144,17 +144,15 @@ export default function AIChatWidget() {
                         : 'bg-white/5 text-[#D7E2EA] border border-white/5 rounded-tl-sm backdrop-blur-md'
                     }`}
                   >
-                    {m.parts?.map((part, index) => part.type === 'text' ? (
-                      m.role === 'user' ? (
-                        <span key={index}>{part.text}</span>
-                      ) : (
-                        <div key={index} className="space-y-3 [&>p]:leading-relaxed [&>ul]:list-disc [&>ul]:pl-5 [&>ol]:list-decimal [&>ol]:pl-5 [&>h1]:font-semibold [&>h2]:font-semibold [&>h3]:font-semibold [&>h4]:font-semibold [&_strong]:font-semibold [&_strong]:text-white">
-                          <ReactMarkdown>
-                            {part.text}
-                          </ReactMarkdown>
-                        </div>
-                      )
-                    ) : null)}
+                    {m.role === 'user' ? (
+                      <span>{m.content}</span>
+                    ) : (
+                      <div className="space-y-3 [&>p]:leading-relaxed [&>ul]:list-disc [&>ul]:pl-5 [&>ol]:list-decimal [&>ol]:pl-5 [&>h1]:font-semibold [&>h2]:font-semibold [&>h3]:font-semibold [&>h4]:font-semibold [&_strong]:font-semibold [&_strong]:text-white">
+                        <ReactMarkdown>
+                          {m.content}
+                        </ReactMarkdown>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               ))}
